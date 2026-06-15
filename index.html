@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>1학기 기말고사 학습카페 감독 신청</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+--bg:#f0f4f8;--surface:#ffffff;--surface2:#f8fafc;
+--primary:#1e4d8c;--primary-dark:#163870;--primary-light:#e8f0fb;
+--accent:#f59e0b;--accent-light:#fffbeb;
+--green:#16a34a;--green-light:#f0fdf4;
+--red:#dc2626;--red-light:#fef2f2;
+--teal:#0e7490;--teal-light:#ecfeff;
+--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+--border:#e2e8f0;--border2:#cbd5e1;
+--radius:14px;--radius-sm:8px;
+--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+--shadow-lg:0 8px 32px rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;}
+
+.hero{background:var(--primary);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);}
+.hero::after{content:'';position:absolute;bottom:-50px;left:15%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:32px 20px 28px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:99px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,.85);margin-bottom:14px;}
+.hero-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero h1{font-size:clamp(19px,4vw,26px);font-weight:900;color:#fff;line-height:1.3;letter-spacing:-1px;margin-bottom:8px;}
+.hero h1 em{color:var(--accent);font-style:normal;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:18px;}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap;}
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:5px 13px;font-size:12px;color:rgba(255,255,255,.8);}
+.hero-pill b{color:#fff;}
+
+.tab-nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.tab-nav-inner{max-width:900px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;}
+.tab-nav-inner::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;padding:13px 18px;font-size:13.5px;font-weight:500;color:var(--text2);border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .2s,border-color .2s;font-family:inherit;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:700;}
+
+.main{max-width:900px;margin:0 auto;padding:22px 16px 60px;}
+.tab-section{display:none;}
+.tab-section.show{display:block;}
+
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:18px;overflow:hidden;}
+.card-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.card-icon{width:30px;height:30px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.card-head h2{font-size:14.5px;font-weight:700;letter-spacing:-.3px;}
+.badge{font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600;border:none;}
+.badge-blue{background:var(--primary-light);color:var(--primary);}
+.badge-amber{background:var(--accent-light);color:#92400e;}
+.card-head .badge{margin-left:auto;cursor:default;}
+.badge-btn{cursor:pointer!important;}
+.card-body{padding:18px 20px;}
+
+.info-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:480px){.info-grid-2{grid-template-columns:1fr;}}
+.info-block{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
+.ib-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.ib-value{font-size:13.5px;font-weight:600;color:var(--text);}
+.time-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:2px;}
+.time-table td{padding:5px 8px;}
+.time-table td:first-child{font-weight:700;width:36px;}
+.time-table tr+tr td{border-top:1px solid var(--border);}
+
+.role-box{background:var(--surface2);border-left:3px solid var(--primary);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:13px 16px;}
+.role-item{font-size:13px;color:var(--text2);padding:4px 0;display:flex;align-items:flex-start;gap:8px;}
+.role-item::before{content:'·';color:var(--primary);font-weight:700;flex-shrink:0;margin-top:1px;}
+
+.rule-list{list-style:none;counter-reset:r;}
+.rule-list li{counter-increment:r;padding:8px 0 8px 28px;position:relative;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border);}
+.rule-list li:last-child{border-bottom:none;}
+.rule-list li::before{content:counter(r);position:absolute;left:0;top:9px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+.week-block{margin-bottom:20px;}
+.week-label{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.week-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.sg-header{display:grid;grid-template-columns:52px repeat(5,1fr);gap:5px;margin-bottom:4px;}
+.sg-day-head{text-align:center;padding:6px 4px;font-size:12px;font-weight:700;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);}
+.sg-day-head .dh-date{font-size:10px;font-weight:400;color:var(--text3);margin-top:1px;}
+.sg-row{display:grid;grid-template-columns:52px repeat(5,1fr);gap:5px;margin-bottom:5px;}
+.sg-part-label{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;border-radius:var(--radius-sm);padding:6px 4px;text-align:center;line-height:1.3;}
+.sg-part-label.p1{background:var(--teal-light);color:var(--teal);border:1px solid #a5f3fc;}
+.sg-part-label.p2{background:var(--primary-light);color:var(--primary);border:1px solid #bfdbfe;}
+.sg-part-label .pl-time{font-size:9px;font-weight:400;margin-top:2px;opacity:.8;}
+
+.slot-cell{border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 4px;text-align:center;cursor:pointer;transition:all .18s;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--surface);}
+.slot-cell:hover:not(.full):not(.selected){background:var(--primary-light);border-color:var(--primary);}
+.slot-cell.full{background:var(--red-light);border-color:#fca5a5;cursor:default;}
+.slot-cell.selected{background:var(--primary);border-color:var(--primary-dark);}
+.slot-cell.selected:hover{background:var(--primary-dark);}
+.sc-count{font-size:11px;font-weight:700;color:var(--text2);}
+.slot-cell.full .sc-count{color:var(--red);}
+.slot-cell.selected .sc-count{color:rgba(255,255,255,.85);}
+.sc-bar{width:80%;height:3px;border-radius:99px;background:var(--border);overflow:hidden;}
+.sc-bar-fill{height:100%;border-radius:99px;background:var(--green);transition:width .3s;}
+.slot-cell.full .sc-bar-fill{background:var(--red);}
+.slot-cell.selected .sc-bar-fill{background:rgba(255,255,255,.5);}
+.sc-lbl{font-size:9.5px;color:var(--text3);}
+.slot-cell.full .sc-lbl{color:var(--red);opacity:.7;}
+.slot-cell.selected .sc-lbl{color:rgba(255,255,255,.7);}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text2);margin-bottom:14px;}
+.legend-item{display:flex;align-items:center;gap:5px;}
+.legend-dot{width:11px;height:11px;border-radius:3px;}
+
+.sel-bar{background:var(--primary-light);border:1px solid #bfdbfe;border-radius:var(--radius-sm);padding:11px 14px;margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.sel-bar-label{font-size:13px;font-weight:700;color:var(--primary);white-space:nowrap;}
+.sel-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.sel-chip{background:var(--primary);color:#fff;border-radius:99px;padding:3px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;}
+.sel-chip button{background:none;border:none;color:rgba(255,255,255,.65);cursor:pointer;font-size:13px;line-height:1;padding:0;}
+.sel-chip button:hover{color:#fff;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-row.single{grid-template-columns:1fr;}
+@media(max-width:500px){.form-row{grid-template-columns:1fr;}}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:.3px;}
+.fg label .req{color:var(--red);margin-left:2px;}
+.fg input{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface2);outline:none;transition:border-color .2s,box-shadow .2s;}
+.fg input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(30,77,140,.1);}
+.fg input.err{border-color:var(--red);}
+.fg .hint{font-size:11px;color:var(--text3);}
+.fg .ferr{font-size:11px;color:var(--red);display:none;}
+.fg .ferr.show{display:block;}
+
+.btn-main{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:-.3px;}
+.btn-main:hover{background:var(--primary-dark);}
+.btn-main:active{transform:scale(.98);}
+.btn-main:disabled{background:var(--text3);cursor:not-allowed;}
+.btn-sm{padding:11px 20px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-sm:hover{background:var(--primary-dark);}
+
+.alert{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;margin-bottom:12px;display:none;}
+.alert.show{display:block;}
+.alert-err{background:var(--red-light);color:#7f1d1d;border:1px solid #fca5a5;}
+.alert-ok{background:var(--green-light);color:#14532d;border:1px solid #bbf7d0;}
+
+/* GAS 연결 상태 표시 */
+.gas-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3);margin-bottom:10px;}
+.gas-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;}
+.gas-dot.ok{background:var(--green);}
+.gas-dot.err{background:var(--red);}
+.gas-dot.loading{background:var(--accent);animation:pulse 1s infinite;}
+
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.filter-btn{padding:6px 14px;border:1.5px solid var(--border);border-radius:99px;background:var(--surface);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);transition:all .2s;}
+.filter-btn.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+.st-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.st{width:100%;border-collapse:collapse;font-size:13px;min-width:360px;}
+.st th{background:var(--surface2);padding:9px 12px;font-size:11px;font-weight:700;color:var(--text2);border-bottom:2px solid var(--border);white-space:nowrap;letter-spacing:.3px;text-align:center;}
+.st th:first-child{text-align:left;}
+.st td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle;}
+.st td:first-child{text-align:left;font-weight:600;}
+.st tr:last-child td{border-bottom:none;}
+.st tr:hover td{background:var(--surface2);}
+.name-chip{font-size:11.5px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:2px 7px;margin:1px 2px;display:inline-block;}
+
+.my-item{border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 15px;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.my-info{flex:1;}
+.my-info .mt{font-size:14px;font-weight:700;}
+.my-info .ms{font-size:12px;color:var(--text2);margin-top:2px;}
+.btn-cancel{padding:7px 13px;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);transition:all .2s;}
+.btn-cancel:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
+
+.empty{text-align:center;padding:36px 20px;color:var(--text3);}
+.empty .ei{font-size:34px;margin-bottom:8px;}
+.empty p{font-size:13px;}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1000;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff;border-radius:var(--radius);width:100%;max-width:420px;box-shadow:var(--shadow-lg);animation:slideUp .22s ease;}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.modal-head h3{font-size:15.5px;font-weight:700;flex:1;}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);line-height:1;}
+.modal-body{padding:18px 20px;}
+.modal-foot{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+.btn-sec{padding:9px 16px;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);}
+.btn-prim{padding:9px 16px;border:none;border-radius:var(--radius-sm);background:var(--primary);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:#fff;transition:background .2s;}
+.btn-prim:hover{background:var(--primary-dark);}
+.btn-danger{padding:9px 16px;border:none;border-radius:var(--radius-sm);background:var(--red);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:#fff;}
+.spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+@media(max-width:600px){
+.sg-part-label{font-size:10px;padding:5px 2px;}
+.sg-part-label .pl-time{font-size:8px;}
+.sg-day-head{font-size:11px;padding:5px 2px;}
+.sg-day-head .dh-date{font-size:9px;}
+.slot-cell{min-height:54px;padding:5px 2px;}
+.sc-count{font-size:10px;}
+.sc-lbl{font-size:9px;}
+.tab-btn{padding:11px 13px;font-size:13px;}
+.card-body{padding:14px 14px;}
+}
+@media(max-width:380px){
+.sg-part-label .pl-time{display:none;}
+.sg-part-label{font-size:9.5px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="hero-dot"></span>2026학년도 1학기</div>
+    <h1>기말고사 <em>학습카페</em> 감독 신청</h1>
+    <p class="hero-sub">6/18(목) ~ 6/30(화) &nbsp;·&nbsp; 12:20 ~ 13:15 &nbsp;·&nbsp; 본관 3층 학습카페</p>
+    <div class="hero-pills">
+      <span class="hero-pill">📅 운영 <b>9일</b></span>
+      <span class="hero-pill">⏰ 1부 <b>12:20~12:45</b></span>
+      <span class="hero-pill">⏰ 2부 <b>12:45~13:15</b></span>
+    </div>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="showTab('info')">운영 안내</button>
+    <button class="tab-btn" onclick="showTab('apply')">감독 신청</button>
+    <button class="tab-btn" onclick="showTab('status')">신청 현황</button>
+    <button class="tab-btn" onclick="showTab('myres')">내 신청 조회</button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- ── 운영 안내 ── -->
+  <div class="tab-section show" id="tab-info">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#e8f0fb;">📋</div>
+        <h2>운영 안내</h2>
+        <span class="badge badge-blue">필독</span>
+      </div>
+      <div class="card-body">
+        <div class="info-grid-2">
+          <div class="info-block">
+            <div class="ib-label">운영 기간</div>
+            <div class="ib-value">6/18(목) ~ 6/30(화)</div>
+          </div>
+          <div class="info-block">
+            <div class="ib-label">운영 시간</div>
+            <table class="time-table">
+              <tr><td style="color:var(--teal);">1부</td><td style="color:var(--teal);font-weight:600;">12:20 ~ 12:45</td></tr>
+              <tr><td style="color:var(--primary);">2부</td><td style="color:var(--primary);font-weight:600;">12:45 ~ 13:15</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#f0fdf4;">🎯</div>
+        <h2>감독 역할</h2>
+      </div>
+      <div class="card-body">
+        <div class="role-box">
+          <div class="role-item">관리석에 착석하여 자습 분위기 조성</div>
+          <div class="role-item">학생 입출입 관리 및 이용 수칙 준수 여부 확인</div>
+          <div class="role-item">감독 학생은 관리석에서 개별 자습 가능</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#fffbeb;">📌</div>
+        <h2>자습실 운영 수칙</h2>
+        <span class="badge badge-amber">숙지 필수</span>
+      </div>
+      <div class="card-body">
+        <ul class="rule-list">
+          <li>자습실 내 절대 정숙</li>
+          <li>본인이 사용한 자리 뒷정리 후 퇴실</li>
+          <li>음식물 반입 및 섭취 금지</li>
+          <li>학습 분위기 저해 및 운영 수칙 위반으로 경고 2회 누적 시 퇴실 조치 및 해당 학기 입실 금지</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#ecfeff;">💡</div>
+        <h2>감독 신청 안내</h2>
+      </div>
+      <div class="card-body">
+        <ul class="rule-list">
+          <li>1부(12:20~12:45) 또는 2부(12:45~13:15)로 구분하여 신청</li>
+          <li>6/18(목)~6/30(화) 9일 중 원하는 날짜와 부를 자유롭게 선택 (중복 신청 가능)</li>
+          <li>학번과 이름을 정확히 입력</li>
+          <li>취소할 경우 신청 시 설정한 비밀번호를 입력해야 합니다.</li>
+        </ul>
+        <div style="margin-top:16px;">
+          <button class="btn-sm" onclick="showTab('apply')">신청하러 가기 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 감독 신청 ── -->
+  <div class="tab-section" id="tab-apply">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#e8f0fb;">📅</div>
+        <h2>일시 선택</h2>
+        <span class="badge badge-blue" id="selCountBadge">0개 선택</span>
+      </div>
+      <div class="card-body">
+        <!-- GAS 연결 상태 표시 -->
+        <div class="gas-status" id="gasStatus">
+          <div class="gas-dot loading" id="gasDot"></div>
+          <span id="gasStatusTxt">서버 연결 확인 중...</span>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--surface);border:1.5px solid var(--border2);"></div>신청 가능</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--red-light);border:1.5px solid #fca5a5;"></div>마감</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--primary);border:1.5px solid var(--primary-dark);"></div>선택됨</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--teal-light);border:1.5px solid #a5f3fc;"></div>1부</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--primary-light);border:1.5px solid #bfdbfe;"></div>2부</div>
+        </div>
+        <div id="scheduleWrap"></div>
+        <div class="sel-bar" id="selBar" style="display:none;">
+          <span class="sel-bar-label">선택:</span>
+          <div class="sel-chips" id="selChips"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#f0fdf4;">👤</div>
+        <h2>신청자 정보</h2>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-err" id="applyAlert"></div>
+        <div class="alert alert-ok"  id="applyOk"></div>
+        <div class="form-row">
+          <div class="fg">
+            <label>학번<span class="req">*</span></label>
+            <input id="f_sid" type="text" placeholder="예) 30101" maxlength="10"/>
+            <span class="ferr" id="e_sid">학번을 입력해 주세요.</span>
+          </div>
+          <div class="fg">
+            <label>이름<span class="req">*</span></label>
+            <input id="f_name" type="text" placeholder="홍길동" maxlength="10"/>
+            <span class="ferr" id="e_name">이름을 입력해 주세요.</span>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="fg">
+            <label>비밀번호<span class="req">*</span></label>
+            <input id="f_pw" type="password" placeholder="취소 시 사용할 비밀번호 (4자리 이상)" maxlength="20"/>
+            <span class="hint">신청 취소 시 입력해야 합니다. 반드시 기억해 두세요.</span>
+            <span class="ferr" id="e_pw">비밀번호 4자리 이상을 입력해 주세요.</span>
+          </div>
+        </div>
+        <button class="btn-main" id="btnApply" onclick="submitApply()">
+          <span id="applyTxt">신청 완료하기</span>
+          <span class="spin" id="applySpin"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 신청 현황 ── -->
+  <div class="tab-section" id="tab-status">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#ecfeff;">📊</div>
+        <h2>신청 현황</h2>
+        <button class="badge badge-blue badge-btn" onclick="loadStatus()">새로고침</button>
+      </div>
+      <div class="card-body">
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="filterStatus('all',this)">전체</button>
+          <button class="filter-btn" onclick="filterStatus('1',this)">1부</button>
+          <button class="filter-btn" onclick="filterStatus('2',this)">2부</button>
+        </div>
+        <div id="statusContent">
+          <div class="empty"><div class="ei">📊</div><p>불러오는 중...</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 내 신청 조회 ── -->
+  <div class="tab-section" id="tab-myres">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#fffbeb;">🔍</div>
+        <h2>내 신청 조회</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-row" style="margin-bottom:12px;">
+          <div class="fg">
+            <label>학번</label>
+            <input id="q_sid" type="text" placeholder="학번 입력"/>
+          </div>
+          <div class="fg">
+            <label>이름</label>
+            <input id="q_name" type="text" placeholder="이름 입력"/>
+          </div>
+        </div>
+        <button class="btn-sm" style="margin-bottom:20px;" onclick="loadMyRes()">조회하기</button>
+        <div id="myResContent">
+          <div class="empty"><div class="ei">🔍</div><p>학번과 이름을 입력하고 조회하세요.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ── 신청완료 모달 ── -->
+<div class="modal-bg" id="modalOk">
+  <div class="modal">
+    <div class="modal-head">
+      <span style="font-size:18px;">✅</span>
+      <h3>신청 완료</h3>
+      <button class="modal-close" onclick="closeModal('modalOk')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center;padding:8px 0 16px;">
+        <div style="font-size:36px;margin-bottom:10px;">🎉</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.8;" id="successMsg"></p>
+      </div>
+      <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:11px 14px;font-size:13px;color:var(--text2);">
+        ⚠️ 비밀번호를 반드시 기억해 두세요. 신청 취소 시 필요합니다.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-prim" onclick="closeModal('modalOk');showTab('status')">현황 확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 취소 모달 ── -->
+<div class="modal-bg" id="modalCancel">
+  <div class="modal">
+    <div class="modal-head">
+      <span style="font-size:18px;">🗑️</span>
+      <h3>신청 취소</h3>
+      <button class="modal-close" onclick="closeModal('modalCancel')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:var(--text2);margin-bottom:14px;line-height:1.6;" id="cancelTarget"></p>
+      <div class="alert alert-err" id="cancelAlert"></div>
+      <div class="fg">
+        <label>비밀번호 확인<span class="req">*</span></label>
+        <input id="cancelPw" type="password" placeholder="신청 시 설정한 비밀번호"/>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-sec" onclick="closeModal('modalCancel')">닫기</button>
+      <button class="btn-danger" onclick="confirmCancel()">취소하기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// ⚠️ 구글 Apps Script 웹앱 URL
+// ══════════════════════════════════════
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzfc_tRdtwcmIv63UxkJbNKKCtdrI8XoWBvACHxJdWelf8rv-3ZOesU2BE00RN4TZQf-A/exec";
+
+// ── 날짜 데이터 (6/18 목 ~ 6/30 화, 주말 제외 9일) ──
+const WEEK1 = [
+  {label:"목", date:"6/18", key:"0618"},
+  {label:"금", date:"6/19", key:"0619"},
+];
+const WEEK2 = [
+  {label:"월", date:"6/22", key:"0622"},
+  {label:"화", date:"6/23", key:"0623"},
+  {label:"수", date:"6/24", key:"0624"},
+  {label:"목", date:"6/25", key:"0625"},
+  {label:"금", date:"6/26", key:"0626"},
+];
+const WEEK3 = [
+  {label:"월", date:"6/29", key:"0629"},
+  {label:"화", date:"6/30", key:"0630"},
+];
+const ALL_DAYS     = [...WEEK1, ...WEEK2, ...WEEK3];
+const MAX_PER_SLOT = 1;
+
+// ── 전역 상태 ──
+let selectedSlots = [];
+let allData       = [];
+let currentFilter = 'all';
+let cancelRowId   = null;
+let myResCache    = [];
+let gasConnected  = false;
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// GAS 연결 상태 UI 업데이트
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function setGasStatus(state, msg) {
+  const dot = document.getElementById('gasDot');
+  const txt = document.getElementById('gasStatusTxt');
+  if (!dot || !txt) return;
+  dot.className = 'gas-dot ' + state;   // ok | err | loading
+  txt.textContent = msg;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 탭 전환
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function showTab(id) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('show'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('show');
+  const idx = ['info','apply','status','myres'].indexOf(id);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  if (id === 'status' || id === 'apply') loadStatus();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 스케줄 그리드 렌더링
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderSchedule() {
+  const wrap  = document.getElementById('scheduleWrap');
+  if (!wrap) return;
+  const weeks = [
+    {label:'1주차 (6/18 ~ 6/19)', days: WEEK1},
+    {label:'2주차 (6/22 ~ 6/26)', days: WEEK2},
+    {label:'3주차 (6/29 ~ 6/30)', days: WEEK3},
+  ];
+  let html = '';
+  weeks.forEach(week => {
+    // 주차별 일수에 맞춰 컬럼 수 동적 설정
+    const n = week.days.length;
+    const gridStyle = `style="grid-template-columns:52px repeat(${n},1fr);"`;
+
+    html += `<div class="week-block"><div class="week-label">${week.label}</div>`;
+    html += `<div class="sg-header" ${gridStyle}><div></div>`;
+    week.days.forEach(d => {
+      html += `<div class="sg-day-head">${d.label}<div class="dh-date">${d.date}</div></div>`;
+    });
+    html += `</div>`;
+    html += `<div class="sg-row" ${gridStyle}><div class="sg-part-label p1">1부<div class="pl-time">12:20~12:45</div></div>`;
+    week.days.forEach(d => { html += makeSlotCell(d, 1); });
+    html += `</div>`;
+    html += `<div class="sg-row" ${gridStyle}><div class="sg-part-label p2">2부<div class="pl-time">12:45~13:15</div></div>`;
+    week.days.forEach(d => { html += makeSlotCell(d, 2); });
+    html += `</div></div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+function makeSlotCell(d, part) {
+  const count  = getCount(d.key, part);
+  const isFull = count >= MAX_PER_SLOT;
+  const isSel  = selectedSlots.some(s => s.dayKey === d.key && s.part === part);
+  const pct    = Math.min(100, (count / MAX_PER_SLOT) * 100);
+  const cls    = (isFull ? 'full ' : '') + (isSel ? 'selected' : '');
+  const lbl    = isFull ? '마감' : isSel ? '선택됨' : '가능';
+  return `<div class="slot-cell ${cls}" onclick="toggleSlot('${d.key}',${part},${isFull})">
+    <span class="sc-count">${count}/${MAX_PER_SLOT}</span>
+    <div class="sc-bar"><div class="sc-bar-fill" style="width:${pct}%"></div></div>
+    <span class="sc-lbl">${lbl}</span>
+  </div>`;
+}
+
+function getCount(dayKey, part) {
+  return allData.filter(r =>
+    r.dayKey === dayKey &&
+    String(r.part) === String(part) &&
+    r.status !== 'cancelled'
+  ).length;
+}
+
+function toggleSlot(dayKey, part, isFull) {
+  if (isFull) return;
+  const idx = selectedSlots.findIndex(s => s.dayKey === dayKey && s.part === part);
+  if (idx >= 0) selectedSlots.splice(idx, 1);
+  else selectedSlots.push({dayKey, part});
+  updateSelBar();
+  renderSchedule();
+}
+
+function updateSelBar() {
+  const bar   = document.getElementById('selBar');
+  const badge = document.getElementById('selCountBadge');
+  badge.textContent = `${selectedSlots.length}개 선택`;
+  if (!selectedSlots.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  document.getElementById('selChips').innerHTML = selectedSlots.map(s => {
+    const d = ALL_DAYS.find(x => x.key === s.dayKey);
+    return `<span class="sel-chip">${d.date} ${s.part}부
+      <button onclick="removeChip('${s.dayKey}',${s.part})">×</button>
+    </span>`;
+  }).join('');
+}
+
+function removeChip(dayKey, part) {
+  selectedSlots = selectedSlots.filter(s => !(s.dayKey === dayKey && s.part === part));
+  updateSelBar();
+  renderSchedule();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// GAS 데이터 로드 (doGet)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function loadStatus() {
+  setGasStatus('loading', '서버 연결 중...');
+  try {
+    const res  = await fetch(`${GAS_URL}?action=getAll`, { cache: 'no-store' });
+    const text = await res.text();
+    console.log('📥 GAS getAll 응답:', text);
+
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch(e) {
+      console.error('❌ JSON 파싱 실패 — GAS가 HTML 오류 페이지를 반환했습니다:', text.slice(0,300));
+      setGasStatus('err', 'GAS 연결 오류 — 재배포 필요 (F12 콘솔 확인)');
+      gasConnected = false;
+      renderSchedule();
+      renderStatus();
+      return;
+    }
+
+    if (parsed && parsed.error) {
+      console.error('❌ GAS 오류:', parsed.error);
+      setGasStatus('err', 'GAS 오류: ' + parsed.error);
+      gasConnected = false;
+      renderSchedule();
+      renderStatus();
+      return;
+    }
+
+    allData      = Array.isArray(parsed) ? parsed : (parsed.data || []);
+    gasConnected = true;
+    setGasStatus('ok', `서버 연결됨 · 총 ${allData.filter(r => r.status !== 'cancelled').length}건`);
+
+  } catch(e) {
+    console.error('❌ 네트워크 오류:', e);
+    setGasStatus('err', '네트워크 오류 — 인터넷 연결을 확인하세요');
+    gasConnected = false;
+  }
+  renderSchedule();
+  renderStatus();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 신청 현황 테이블 렌더링
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderStatus() {
+  const el = document.getElementById('statusContent');
+  if (!el) return;
+
+  const active = allData.filter(r => r.status !== 'cancelled');
+  const weeks  = [{days: WEEK1}, {days: WEEK2}, {days: WEEK3}];
+
+  let html   = '<div class="st-wrap"><table class="st"><thead><tr>'
+    + '<th>날짜</th><th>구분</th><th>신청 현황</th><th>감독자</th>'
+    + '</tr></thead><tbody>';
+  let hasRow = false;
+
+  weeks.forEach(week => {
+    week.days.forEach(d => {
+      [1, 2].forEach(p => {
+        if (currentFilter !== 'all' && String(p) !== currentFilter) return;
+
+        const entries = active.filter(r =>
+          r.dayKey === d.key && String(r.part) === String(p)
+        );
+        const count  = entries.length;
+        const isFull = count >= MAX_PER_SLOT;
+        const partColor   = p === 1 ? 'var(--teal)' : 'var(--primary)';
+        const statusBadge = isFull
+          ? `<span class="badge" style="background:var(--red-light);color:var(--red);border:1px solid #fca5a5;">마감</span>`
+          : `<span class="badge" style="background:var(--green-light);color:var(--green);border:1px solid #bbf7d0;">가능</span>`;
+        const nameHtml = entries.length
+          ? entries.map(e => `<span class="name-chip">${e.name}(${e.sid})</span>`).join('')
+          : `<span style="color:var(--text3);">-</span>`;
+
+        html += `<tr>
+          <td><b>${d.label}</b> ${d.date}</td>
+          <td><span style="color:${partColor};font-weight:700;">${p}부</span></td>
+          <td style="white-space:nowrap;">${statusBadge} <span style="font-size:12px;">${count}/${MAX_PER_SLOT}</span></td>
+          <td>${nameHtml}</td>
+        </tr>`;
+        hasRow = true;
+      });
+    });
+  });
+
+  html += '</tbody></table></div>';
+  el.innerHTML = hasRow
+    ? html
+    : '<div class="empty"><div class="ei">📊</div><p>신청 내역이 없습니다.</p></div>';
+}
+
+function filterStatus(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStatus();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 신청 제출
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function submitApply() {
+  hideAlerts();
+
+  const sid  = document.getElementById('f_sid').value.trim();
+  const name = document.getElementById('f_name').value.trim();
+  const pw   = document.getElementById('f_pw').value.trim();
+
+  let valid = true;
+  if (!sid)          { showFerr('e_sid');  valid = false; } else { hideFerr('e_sid');  }
+  if (!name)         { showFerr('e_name'); valid = false; } else { hideFerr('e_name'); }
+  if (pw.length < 4) { showFerr('e_pw');  valid = false; } else { hideFerr('e_pw');   }
+
+  if (!valid) return;
+
+  if (!selectedSlots.length) {
+    showAlert('applyAlert', '신청할 날짜와 부를 선택해 주세요.');
+    return;
+  }
+
+  if (!gasConnected) {
+    showAlert('applyAlert', 'GAS 서버에 연결되지 않았습니다. 페이지를 새로고침하거나 잠시 후 다시 시도해 주세요.');
+    return;
+  }
+
+  const fullSlots = selectedSlots.filter(s => getCount(s.dayKey, s.part) >= MAX_PER_SLOT);
+  if (fullSlots.length) {
+    showAlert('applyAlert', '선택한 슬롯 중 이미 마감된 항목이 있습니다. 다시 선택해 주세요.');
+    selectedSlots = selectedSlots.filter(s =>
+      !fullSlots.some(f => f.dayKey === s.dayKey && f.part === s.part)
+    );
+    updateSelBar();
+    renderSchedule();
+    return;
+  }
+
+  setLoading(true);
+  const payload = {
+    action: 'apply',
+    sid, name, pw,
+    slots: selectedSlots,
+    ts: new Date().toLocaleString('ko-KR')
+  };
+
+  try {
+    const res  = await fetch(GAS_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body:    JSON.stringify(payload)
+    });
+
+    const text = await res.text();
+    console.log('📤 GAS 응답 (신청):', text);
+
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch(parseErr) {
+      showAlert('applyAlert',
+        'GAS가 올바른 응답을 반환하지 않았습니다. ' +
+        'Apps Script를 새 버전으로 재배포했는지 확인하세요. ' +
+        '(F12 콘솔에서 응답 내용 확인 가능)');
+      console.error('❌ JSON 파싱 실패. 실제 응답:', text.slice(0, 500));
+      return;
+    }
+
+    if (!result.success) {
+      showAlert('applyAlert', result.message || '처리 중 오류가 발생했습니다. F12 콘솔을 확인하세요.');
+      console.error('❌ GAS 처리 실패:', result);
+      return;
+    }
+
+    await loadStatus();
+
+    const list = payload.slots
+      .map(s => { const d = ALL_DAYS.find(x => x.key === s.dayKey); return `${d.date} ${s.part}부`; })
+      .join(', ');
+    document.getElementById('successMsg').innerHTML =
+      `<b>${name}</b>(${sid})님의 신청이 완료되었습니다.<br><br>📅 ${list}`;
+
+    if (result.message) showAlert('applyOk', result.message);
+
+    selectedSlots = [];
+    updateSelBar();
+    renderSchedule();
+    ['f_sid','f_name','f_pw'].forEach(id => { document.getElementById(id).value = ''; });
+    openModal('modalOk');
+
+  } catch(e) {
+    console.error('❌ fetch 오류:', e);
+    showAlert('applyAlert', '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 내 신청 조회
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function loadMyRes() {
+  const sid  = document.getElementById('q_sid').value.trim();
+  const name = document.getElementById('q_name').value.trim();
+
+  if (!sid && !name) {
+    document.getElementById('myResContent').innerHTML =
+      '<div class="empty"><div class="ei">🔍</div><p>학번과 이름을 입력하고 조회하세요.</p></div>';
+    return;
+  }
+
+  await loadStatus();
+
+  const myItems = allData.filter(r =>
+    r.status !== 'cancelled' &&
+    (!sid  || r.sid  === sid)  &&
+    (!name || r.name === name)
+  );
+  myResCache = myItems;
+
+  if (!myItems.length) {
+    document.getElementById('myResContent').innerHTML =
+      '<div class="empty"><div class="ei">📭</div><p>신청 내역이 없습니다.</p></div>';
+    return;
+  }
+
+  let html = '';
+  myItems.forEach((r, idx) => {
+    const d     = ALL_DAYS.find(x => x.key === r.dayKey);
+    const label = d ? `${d.label} ${d.date} ${r.part}부` : `${r.dayKey} ${r.part}부`;
+    html += `<div class="my-item">
+      <div class="my-info">
+        <div class="mt">📅 ${label}</div>
+        <div class="ms">${r.name}(${r.sid}) · ${r.ts || ''}</div>
+      </div>
+      <button class="btn-cancel" onclick="openCancelModal(${idx})">취소</button>
+    </div>`;
+  });
+  document.getElementById('myResContent').innerHTML = html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 취소 모달
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function openCancelModal(idx) {
+  const r = myResCache[idx];
+  if (!r) return;
+  cancelRowId = r.id;
+  const d     = ALL_DAYS.find(x => x.key === r.dayKey);
+  const label = d ? `${d.label} ${d.date} ${r.part}부` : `${r.dayKey} ${r.part}부`;
+  document.getElementById('cancelTarget').innerHTML =
+    `<b>${r.name}</b>(${r.sid})님의 <b>${label}</b> 신청을 취소하시겠습니까?`;
+  document.getElementById('cancelPw').value = '';
+  hideAlert('cancelAlert');
+  openModal('modalCancel');
+}
+
+async function confirmCancel() {
+  const pw = document.getElementById('cancelPw').value.trim();
+  if (!pw) { showAlert('cancelAlert', '비밀번호를 입력해 주세요.'); return; }
+
+  try {
+    const res  = await fetch(GAS_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body:    JSON.stringify({ action: 'cancel', id: cancelRowId, pw })
+    });
+
+    const text = await res.text();
+    console.log('📤 GAS 응답 (취소):', text);
+
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch(e) {
+      showAlert('cancelAlert', 'GAS 응답 오류 — F12 콘솔을 확인하세요.');
+      return;
+    }
+
+    if (!result.success) {
+      showAlert('cancelAlert', result.message || '취소에 실패했습니다.');
+      return;
+    }
+
+    await loadStatus();
+    closeModal('modalCancel');
+    loadMyRes();
+
+  } catch(e) {
+    showAlert('cancelAlert', '네트워크 오류가 발생했습니다.');
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UI 헬퍼
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function setLoading(on) {
+  document.getElementById('btnApply').disabled        = on;
+  document.getElementById('applyTxt').style.display  = on ? 'none' : '';
+  document.getElementById('applySpin').style.display = on ? 'inline-block' : 'none';
+}
+function openModal(id)  { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function showFerr(id) {
+  document.getElementById(id).classList.add('show');
+  const f = document.getElementById(id.replace('e_','f_'));
+  if (f) f.classList.add('err');
+}
+function hideFerr(id) {
+  document.getElementById(id).classList.remove('show');
+  const f = document.getElementById(id.replace('e_','f_'));
+  if (f) f.classList.remove('err');
+}
+function showAlert(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function hideAlert(id) { document.getElementById(id).classList.remove('show'); }
+function hideAlerts()  { ['applyAlert','applyOk'].forEach(hideAlert); }
+
+// 모달 배경 클릭 닫기
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('show'); });
+});
+
+// ── 초기 실행 ──
+renderSchedule();
+loadStatus();
+</script>
+</body>
+</html>
